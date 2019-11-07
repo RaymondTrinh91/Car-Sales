@@ -34,14 +34,14 @@ export const initialState = {
 export const reducer = (state, action) => {
     switch (action.type) {
         case ADD_FEATURE:
-            const featureAdd = state.additionalFeatures.filter(feat => {
-                return feat.id === action.payload.id
-            })
+            const featureAdd = state.additionalFeatures.find(feat => (
+                feat.id === action.payload.id
+            ))
             return {
                 ...state, 
                     car: {
                     ...state.car,
-                    features: [...state.car.features, ...featureAdd]
+                    features: [...state.car.features, featureAdd]
                 },
                 additionalPrice: state.additionalPrice + featureAdd.price
             }
@@ -49,13 +49,13 @@ export const reducer = (state, action) => {
             const featureRemove = state.car.features.filter(feat => (
                 feat.id !== action.payload.id
             ))
-            console.log(featureRemove)
             return {
                 ...state, 
                     car: {
                     ...state.car,
                     features: featureRemove
-                }
+                },
+                additionalPrice: state.additionalPrice - action.payload.price
             }
         default:
             return state
